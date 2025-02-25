@@ -25,59 +25,62 @@ jobs:
         python -m pip install --upgrade pip
         pip install nbformat jupyter notebook opencv-python pytest
         
-    - name: Check images in notebook
+    - name: Create check script
       run: |
-        python -c "
-import nbformat
-import re
-import os
-import sys
+        cat > check_images.py << 'EOL'
+        import nbformat
+        import re
+        import os
+        import sys
 
-# List of image files to check
-required_images = ['Dr_Shashi_Tharoor.jpg', 'Plaksha_Faculty.jpg']
+        # List of image files to check
+        required_images = ['Dr_Shashi_Tharoor.jpg', 'Plaksha_Faculty.jpg']
 
-# Check if image files exist in repository
-missing_files = []
-for img in required_images:
-    if not os.path.exists(img):
-        missing_files.append(img)
-
-if missing_files:
-    print(f'Error: The following image files are missing: {missing_files}')
-    sys.exit(1)
-
-# Load the notebook
-notebook_path = 'Lab 5-Spring 2025.ipynb'
-if not os.path.exists(notebook_path):
-    print(f'Error: Notebook {notebook_path} not found')
-    sys.exit(1)
-
-with open(notebook_path, 'r', encoding='utf-8') as f:
-    notebook = nbformat.read(f, as_version=4)
-
-# Search for cv2.imread with our image files
-found_images = {img: False for img in required_images}
-cv2_import_found = False
-
-for cell in notebook.cells:
-    if cell.cell_type == 'code':
-        # Check for cv2 import
-        if 'import cv2' in cell.source:
-            cv2_import_found = True
-            
-        # Look for image loading with cv2.imread
+        # Check if image files exist in repository
+        missing_files = []
         for img in required_images:
-            if f'cv2.imread' in cell.source and img in cell.source:
-                found_images[img] = True
+            if not os.path.exists(img):
+                missing_files.append(img)
 
-# Report results
-if not cv2_import_found:
-    print('Warning: No import of cv2 found in notebook')
-    
-not_found = [img for img, found in found_images.items() if not found]
-if not_found:
-    print(f'Error: The following images are not loaded with cv2.imread in the notebook: {not_found}')
-    sys.exit(1)
-else:
-    print('Success: All required images are loaded with cv2.imread in the notebook')
-"
+        if missing_files:
+            print(f'Error: The following image files are missing: {missing_files}')
+            sys.exit(1)
+
+        # Load the notebook
+        notebook_path = 'Lab 5-Spring 2025.ipynb'
+        if not os.path.exists(notebook_path):
+            print(f'Error: Notebook {notebook_path} not found')
+            sys.exit(1)
+
+        with open(notebook_path, 'r', encoding='utf-8') as f:
+            notebook = nbformat.read(f, as_version=4)
+
+        # Search for cv2.imread with our image files
+        found_images = {img: False for img in required_images}
+        cv2_import_found = False
+
+        for cell in notebook.cells:
+            if cell.cell_type == 'code':
+                # Check for cv2 import
+                if 'import cv2' in cell.source:
+                    cv2_import_found = True
+                    
+                # Look for image loading with cv2.imread
+                for img in required_images:
+                    if f'cv2.imread' in cell.source and img in cell.source:
+                        found_images[img] = True
+
+        # Report results
+        if not cv2_import_found:
+            print('Warning: No import of cv2 found in notebook')
+            
+        not_found = [img for img, found in found_images.items() if not found]
+        if not_found:
+            print(f'Error: The following images are not loaded with cv2.imread in the notebook: {not_found}')
+            sys.exit(1)
+        else:
+            print('Success: All required images are loaded with cv2.imread in the notebook')
+        EOL
+
+    - name: Run check script
+      run: python check_images.py"
