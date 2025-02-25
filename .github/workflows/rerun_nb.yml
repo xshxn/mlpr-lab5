@@ -19,10 +19,10 @@ jobs:
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
         
@@ -33,7 +33,7 @@ jobs:
         # Add any other dependencies your notebook requires
         
     - name: Cache pip dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -58,7 +58,7 @@ jobs:
         fi
         
     - name: Upload output notebook as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: notebook-output
         path: 'Lab_5-Spring_2025_output.ipynb'
@@ -72,4 +72,3 @@ jobs:
         git commit -m "Add notebook output from automated run" || echo "No changes to commit"
         git push || echo "Could not push changes"
       continue-on-error: true
-    
