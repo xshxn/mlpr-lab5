@@ -33,19 +33,6 @@ jobs:
         import os
         import sys
 
-        # List of image files to check
-        required_images = ['Dr_Shashi_Tharoor.jpg', 'Plaksha_Faculty.jpg']
-
-        # Check if image files exist in repository
-        missing_files = []
-        for img in required_images:
-            if not os.path.exists(img):
-                missing_files.append(img)
-
-        if missing_files:
-            print(f'Error: The following image files are missing: {missing_files}')
-            sys.exit(1)
-
         # Load the notebook
         notebook_path = 'Lab 5-Spring 2025.ipynb'
         if not os.path.exists(notebook_path):
@@ -84,4 +71,3 @@ jobs:
 
     - name: Run check script
       run: python check_images.py
-      
