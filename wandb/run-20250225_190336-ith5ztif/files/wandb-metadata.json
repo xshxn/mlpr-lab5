@@ -1,0 +1,31 @@
+{
+  "os":  "Windows-11-10.0.22631-SP0",
+  "python":  "CPython 3.12.5",
+  "startedAt":  "2025-02-25T13:33:36.854891Z",
+  "program":  "c:\\Users\\eshan\\OneDrive\\Desktop\\Plaksha\\Sem4\\MLPR\\Labs\\Lab5\\Lab 5-Spring 2025.ipynb",
+  "codePath":  "Lab 5-Spring 2025.ipynb",
+  "git":  {
+    "remote":  "https://github.com/xshxn/mlpr-lab5.git",
+    "commit":  "288d51257286899e406462859a6f93174d51d0e1"
+  },
+  "email":  "eshan.s.ug23@plaksha.edu.in",
+  "root":  "c:\\Users\\eshan\\OneDrive\\Desktop\\Plaksha\\Sem4\\MLPR\\Labs\\Lab5",
+  "host":  "LAPTOP-96HP196N",
+  "executable":  "c:\\Users\\eshan\\OneDrive\\Desktop\\Plaksha\\Sem4\\MLPR\\mlpr\\Scripts\\python.exe",
+  "codePathLocal":  "Lab 5-Spring 2025.ipynb",
+  "cpu_count":  8,
+  "cpu_count_logical":  16,
+  "disk":  {
+    "/":  {
+      "total":  "370049093632",
+      "used":  "313658392576"
+    }
+  },
+  "memory":  {
+    "total":  "16354062336"
+  },
+  "cpu":  {
+    "count":  8,
+    "countLogical":  16
+  }
+}

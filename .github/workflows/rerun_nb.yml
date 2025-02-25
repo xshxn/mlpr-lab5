@@ -1,0 +1,75 @@
+name: Run Lab 5-Spring 2025 Notebook
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'Lab 5-Spring 2025.ipynb'
+      - '*.py'
+      - 'data/**'
+      - '*.jpg'
+      - '*.png'
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  run-notebook:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install jupyter nbconvert nbformat papermill matplotlib pandas numpy opencv-python scikit-learn
+        # Add any other dependencies your notebook requires
+        
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+        
+    - name: Run Lab 5-Spring 2025 notebook
+      run: |
+        # Handle spaces in filename with quotes
+        notebook="Lab 5-Spring 2025.ipynb"
+        output_notebook="Lab_5-Spring_2025_output.ipynb"
+        
+        echo "Running notebook: $notebook"
+        # Check if notebook exists
+        if [ -f "$notebook" ]; then
+          # Execute notebook with papermill
+          papermill "$notebook" "$output_notebook"
+          echo "Notebook execution completed."
+        else
+          echo "Error: Notebook '$notebook' not found!"
+          exit 1
+        fi
+        
+    - name: Upload output notebook as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: notebook-output
+        path: 'Lab_5-Spring_2025_output.ipynb'
+        
+    - name: Commit and push output notebook
+      if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+      run: |
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "actions@github.com"
+        git add Lab_5-Spring_2025_output.ipynb
+        git commit -m "Add notebook output from automated run" || echo "No changes to commit"
+        git push || echo "Could not push changes"
+      continue-on-error: true
+    
