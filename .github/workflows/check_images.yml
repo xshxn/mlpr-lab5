@@ -83,4 +83,5 @@ jobs:
         EOL
 
     - name: Run check script
-      run: python check_images.py"
+      run: python check_images.py
+      
