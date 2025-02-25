@@ -33,6 +33,10 @@ jobs:
         import os
         import sys
 
+
+        required_images = ['Dr_Shashi_Tharoor.jpg', 'Plaksha_Faculty.jpg']
+
+
         # Load the notebook
         notebook_path = 'Lab 5-Spring 2025.ipynb'
         if not os.path.exists(notebook_path):
@@ -71,3 +75,4 @@ jobs:
 
     - name: Run check script
       run: python check_images.py
+      
